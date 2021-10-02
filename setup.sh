@@ -13,6 +13,6 @@ task install-pkg python3.9-distutils -y
 wait
 task pip uninstall psutil -y
 uns=$!
-pipnstall aiofiles colorama flask chardet discord.py-self aiodns
+pipnstall aiofiles colorama gpytranslate flask chardet discord.py-self aiodns
 wait $uns
 pipnstall psutil

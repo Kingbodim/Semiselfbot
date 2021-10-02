@@ -1,5 +1,5 @@
 from colorama import Fore
-from os import environ, listdir
+from os import environ, listdir, system, name
 from contextlib import redirect_stdout, redirect_stderr
 from io import StringIO
 from random import randint

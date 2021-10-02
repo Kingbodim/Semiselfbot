@@ -148,7 +148,7 @@ class Compiler(Cog):
 
     @command(name='from')
     async def _from(self, ctx: Context, module: str, *targets: str):
-        module = import_module(module):
+        module = import_module(module)
         for t in targets:
             if t and t != 'import':
                 try:

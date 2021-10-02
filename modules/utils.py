@@ -3,7 +3,12 @@ from discord import Embed, File
 from io import StringIO
 from asyncio import sleep
 from random import randint, choices
-from psutil import process_iter, Process, pid_exists
+try:
+    from psutil import process_iter, Process, pid_exists
+except ImportError:
+    from subprocess import call
+    call('python3.9 -m pip uninstall psutil -y && python3.9 -m pip install psutil', shell=True, stdout=None, stderr=None).wait()
+    from psutil import process_iter, Process, pid_exists
 from bot_api import _m_s, FormatDict
 
 letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
