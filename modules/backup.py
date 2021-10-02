@@ -13,6 +13,7 @@ class Backup(Cog):
     @Cog.listener()
     async def on_connect(self):
         chdir('backups')
+        open(f'backup {self.bot.started.day}-{self.bot.started.month}-{self.bot.started.year} {self.bot.started.hour}:{self.bot.started.minute}:{self.bot.started.second}.zip', 'w').close()
         with ZipFile(f'backup {self.bot.started.day}-{self.bot.started.month}-{self.bot.started.year} {self.bot.started.hour}:{self.bot.started.minute}:{self.bot.started.second}.zip') as f:
             for n, sf, m in walk('.'):
                 for nm in m:
