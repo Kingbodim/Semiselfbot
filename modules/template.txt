@@ -16,5 +16,5 @@ class {name}(Cog):
 
 
 def setup(bot: Bot):
-    bot.add_cog(Ready(bot))
+    bot.add_cog({name}(bot))
     _m_s(__file__)

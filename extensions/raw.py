@@ -6,7 +6,7 @@ class Raw(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    @command(aliases=['raw', 'getraw', 'content', 'getcontent'])
+    @command(aliases=['raw', 'getraw', 'getcontent'])
     async def getrawcontent(self, ctx: Context):
         if ctx.message.reference:
             await ctx.reply(f'```{(await ctx.fetch_message(ctx.message.reference.message_id)).content}```')

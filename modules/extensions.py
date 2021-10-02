@@ -21,7 +21,7 @@ class Extensions(Cog):
                     m = (await self.bot.wait_for('message_edit', check=lambda before, after: before.id == msg.id))[1]
                     if not m.content.startswith('```py') or not m.content.endswith('```'):
                         await m.delete()
-                        await (await channel.fetch_message(m.refference.message_id)).delete()
+                        await (await ctx.channel.fetch_message(m.reference.message_id)).delete()
                         break
                     await f.seek(0)
                     await f.truncate(0)
@@ -48,7 +48,7 @@ class Extensions(Cog):
                     m = (await self.bot.wait_for('message_edit', check=lambda before, after: before.id == msg.id))[1]
                     if not m.content.startswith('```py') or not m.content.endswith('```'):
                         await m.delete()
-                        await (await channel.fetch_message(m.refference.message_id)).delete()
+                        await (await ctx.channel.fetch_message(m.reference.message_id)).delete()
                         break
                     await f.seek(0)
                     await f.truncate(0)

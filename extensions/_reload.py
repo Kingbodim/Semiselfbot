@@ -1,7 +1,7 @@
 from discord.ext.commands import Cog, Context, command, Bot
 from discord import Embed
 from os import listdir
-from bot_api import _e_s
+from bot_api import _e_s, color
 
 
 class Reload(Cog):
