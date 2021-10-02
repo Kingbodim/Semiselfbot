@@ -15,12 +15,13 @@ class Extensions(Cog):
             async with aopen(f'extensions/{extension}.py', 'w') as f, aopen('extensions/template.txt', 'r') as r:
                 await f.write((await r.read()).format(name=extension.capitalize()))
         async with aopen(f'extensions/{extension}.py', 'r+') as f:
-            msg = await ctx.send(f'```py\n{await f.read()}```')
+            msg = await ctx.reply(f'```py\n{await f.read()}```')
             while True:
                 try:
                     m = (await self.bot.wait_for('message_edit', check=lambda before, after: before.id == msg.id))[1]
                     if not m.content.startswith('```py') or not m.content.endswith('```'):
                         await m.delete()
+                        await (await channel.fetch_message(m.refference.message_id)).delete()
                         break
                     await f.seek(0)
                     await f.truncate(0)
@@ -41,12 +42,13 @@ class Extensions(Cog):
             async with aopen(f'modules/{module}.py', 'w') as f, aopen('modules/template.txt', 'r') as r:
                 await f.write((await r.read()).format(name=module.capitalize()))
         async with aopen(f'modules/{module}.py', 'r+') as f:
-            msg = await ctx.send(f'```py\n{await f.read()}```')
+            msg = await ctx.reply(f'```py\n{await f.read()}```')
             while True:
                 try:
                     m = (await self.bot.wait_for('message_edit', check=lambda before, after: before.id == msg.id))[1]
                     if not m.content.startswith('```py') or not m.content.endswith('```'):
                         await m.delete()
+                        await (await channel.fetch_message(m.refference.message_id)).delete()
                         break
                     await f.seek(0)
                     await f.truncate(0)
@@ -81,7 +83,7 @@ class Extensions(Cog):
 
     @command(aliases=['extensions', 'module_list', 'modules'])
     async def extension_list(self, ctx: Context):
-        await ctx.reply(embed=Embed(title='Extensions & modules', description='Use `.extension <extension>` or `.module <module>` to edit and create extensions and modules.\n\n```\n'+'\n'.join(self.bot.extensions.keys())+'```', color=color()))
+        await ctx.reply(embed=Embed(title='Extensions & modules', description=f'Use `{ctx.prefix}extension <extension>` or `{ctx.prefix}module <module>` to edit and create extensions and modules.\n\n```\n'+'\n'.join(self.bot.extensions.keys())+'```', color=color()))
 
 
 def setup(bot: Bot):

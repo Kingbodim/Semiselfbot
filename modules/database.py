@@ -2,7 +2,8 @@ from discord.ext.commands import Cog, Context, command, Bot
 from discord import Embed
 from replit import db
 from datetime import datetime
-from typing import Unasyncasyncfrom io import sleep mt_mpim, ,,,,color _m_s
+from asyncio import sleep
+from bot_api import color, _m_s
 
 
 class Database(Cog):
@@ -37,7 +38,7 @@ class Database(Cog):
             await ctx.reply(f'✅ {key} set to {db[key]} successfully')
 
     @command(aliases=['enable'])
-    async def habilite(self, ctx: Context, key: str, time: Union[int, float]):
+    async def habilite(self, ctx: Context, key: str, time: float):
         try:
             db[key] = True
         except Exception as e:
@@ -58,7 +59,7 @@ class Database(Cog):
         t = datetime.utcnow() - self.bot.started
         h, remainder = divmod(t.seconds, 3600)
         m, s = divmod(remainder, 60)
-        embed = Embed(title='Upts}, days,n=f'Bot is up since {self.bot.started}, for {t.daycolor() {h} hours, {m} minutes and {s} seconds.', color=0xff8921)
+        embed = Embed(title='Uptime', description=f'Bot is up since {self.bot.started}, for {t.days} days, {h} hours, {m} minutes and {s} seconds.', color=color())
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)
         await ctx.send(embed=embed)
 

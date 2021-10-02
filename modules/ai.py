@@ -1,9 +1,10 @@
 from discord.ext.commands import Cog, Context, command, Bot
 from discord import Embed
 from os import environ
-from asyncio imp sleeplor
-from random imp chortoice
-from bot_api impor m_sch_, com_s
+from asyncio import sleep
+from random import choice
+from bot_api import _m_s, color
+from gpytranslate import Translator
 
 
 params = {'message': None,
@@ -73,23 +74,29 @@ responses = [['Según veo, sí',
 class Ai(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
+        self.translator = Translator()
 
     @command(aliases=['ai', 'bot', 'cb'])
-    async def chatbot(self, ctx: Context):
+    async def chatbot(self, ctx: Context, translate: str = None):
         while True:
             m = await self.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and m.channel.id == ctx.channel.id and not m.content.startswith(' > '))
             if m.content.lower().strip() == 'exit':
                 break
-            async with self.bot.http._HTTPClient__session.get('https://api.pgamerx.com/v5/ai', headers={'Authorization': environ['RANDAPI_KEY']}, params={**params, 'message': m.content}) as r:
-                await m.reply(' > ' + (await r.json())[0]['response'])
+            if translate:
+                async with self.bot.http._HTTPClient__session.get('https://api.pgamerx.com/v5/ai', headers={'Authorization': environ['RANDAPI_KEY']}, params={**params, 'message': await self.translate(m.content, targetlang='en')}) as r:
+                    await m.reply(' > ' + await self.translator.translate((await r.json())[0]['response'], targetlang=translate))
+            else:
+                async with self.bot.http._HTTPClient__session.get('https://api.pgamerx.com/v5/ai', headers={'Authorization': environ['RANDAPI_KEY']}, params={**params, 'message': m.content}) as r:
+                    await m.reply(' > ' + (await r.json())[0]['response'])
 
     @command(name='8_ball', aliases=['8b', '8ball', 'ball'])
     async def _8(self, ctx: Context, *, content: str):
         async with ctx.channel.typing():
             await sleep(2)
-            embed = Embed(title='La bola de la suerte', description='La bola 8 ha hablado, la divinself.bot.api.idad tieo) a la suerte! Veamos su perfecto pronóstico del futuro...', color=color()        )
-            embed.add_field(name='Pregunta', value=content.lower().capital    embed.add_field(name='Respuesta', value=choice(choice(responses)))
-      bot.api.      await ctx.reply(embed=embed)
+            embed = Embed(title='La bola de la suerte', description='La bola 8 ha hablado, la divinidad puede tentar a la suerte! Veamos su perfecto pronóstico del futuro...', color=color())
+            embed.add_field(name='Pregunta', value=content.lower().capitalize())
+            embed.add_field(name='Respuesta', value=choice(choice(responses)))
+            await ctx.reply(embed=embed)
 
 
 def setup(bot: Bot):

@@ -5,8 +5,8 @@ from time import perf_counter
 from discord import File
 from io import StringIO
 from importlib import import_module
-frextlib om contextlib redirect_stdout
-fromibimpapt ectort _m_s
+from contextlib import redirect_stdout
+from bot_api import _m_s
 
 
 class Compiler(Cog):
@@ -144,17 +144,18 @@ class Compiler(Cog):
                         raise ImportError(f'The module {m} was already imported')
                     globals()[m] = import_module(m)
                 except Exception as e:
-                    await ctx.reply(f'E: ```\n{e}\n```
-        for t in targets:)
+                    await ctx.reply(f'E: ```\n{e}\n```')
+
+    @command(name='from')
     async def _from(self, ctx: Context, module: str, *targets: str):
-        module = import    _):
-                        raise Impise Import t in targets:
+        module = import_module(module):
+        for t in targets:
             if t and t != 'import':
                 try:
-                    if t in globalsp                exceortError(f'The module {module.__name__}.{t} was already imported')
+                    if t in globals():
+                        raise ImportError(f'The module {module.__name__}.{t} was already imported')
                     globals()[t] = getattr(module, t)
-     bot.api._m_s(__file__)
-pt Exception as e:
+                except Exception as e:
                     await ctx.reply(f'Error: ```\n{e}\n```')
 
 

@@ -9,12 +9,12 @@ class Reload(Cog):
         self.bot = bot
 
     @command(aliases=['restart'])
-    async def reload(self, ctx: Context, cog=None):
+    async def reload(self, ctx: Context, cog: str = None):
         if not cog:
             async with ctx.typing():
                 embed = Embed(
                     title="Reloading all cogs!",
-                    color=0x808080,
+                    color=color(),
                     timestamp=ctx.message.created_at
                 )
                 for ext in listdir('extensions'):
@@ -54,7 +54,7 @@ class Reload(Cog):
             async with ctx.typing():
                 embed = Embed(
                     title=f'Reloading cog {cog}',
-                    color=0x808080,
+                    color=color(),
                     timestamp=ctx.message.created_at
                 )
                 try:

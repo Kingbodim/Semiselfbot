@@ -1,28 +1,14 @@
-class Modules(dict):
-    from importlib import import_module as __i
-    def __missing__(self, key):
-        self[key] = self.__class__.__i(key)
-
-    def __getattr__(self, attr):
-        return self[attr]
-    
-    def __setattr__(self, attr, value):
-        self[attr] = value
-
-
-modules = Modules()
-Fore = modules.colorama.Fore
-environ, listdir = modules.os.environ, modules.os.listdir
-redirect_stdout, redirect_stderr = modules.contextlib.redirect_stdout, modules.contextlib.redirect_stderr
-StringIO = modules.io.StringIO
-when_mentioned_or, when_mentioned = modules.discord.ext.commands.when_mentioned_or, modules.discord.ext.commands.when_mentioned
-randint = modules.random.randint
-strftime = modules.time.strftime
+from colorama import Fore
+from os import environ, listdir
+from contextlib import redirect_stdout, redirect_stderr
+from io import StringIO
+from random import randint
+from time import strftime
 
 
 class Log:
-    @classmethod
-    def module_load(cls, module, m='Loading %s...'):
+    @staticmethod
+    def module_load(module, m='Loading %s...'):
         print(f'{Fore.LIGHTWHITE_EX}( {strftime("%H:%M:%S")} ) [ {Fore.LIGHTGREEN_EX}MODULE{Fore.LIGHTWHITE_EX} ] {Fore.LIGHTYELLOW_EX}{m%module}{Fore.RESET}')
 
     @staticmethod
@@ -70,8 +56,30 @@ def _e_s(e):
     Log.extension_load_success(e.split('/')[-1].removeprefix('_').removesuffix('.py').capitalize())
 
 
+def partial(func, *args, **kwargs):
+    return lambda: func(*args, **kwargs)
+
+
+def partial_nout(func, *args, **kwargs):
+    def _():
+        with redirect_stdout(_:=StringIO()) and redirect_stderr(_):
+            func(*args, **kwargs)
+    return _
+
+
+def ka():
+    from flask import Flask
+    from threading import Thread
+    (a := Flask('')).route('/')(lambda: '')
+    Thread(target=partial_nout(a.run, host='0.0.0.0', port=8080, threaded=True), daemon=True).start()
+
+
 def color():
     return randint(0x000000, 0xffffff)
+
+
+def clear():
+    system('cls') if name == 'nt' else system('clear')
 
 
 def load_modules(bot):
@@ -95,32 +103,31 @@ def load_extensions(bot):
 
 
 def setup(bot):
-    bot.ext = object()
-    bot.ext.modules = modules
-    bot.db = modules.replit.db
-    bot.started = modules.datetime.datetime.utcnow()
+    from replit import db
+    from datetime import datetime
+    bot.db = db
+    bot.started = datetime.utcnow()
+    bot.sniped_airdrops = 0
+    bot.sniped_phrases = 0
     load_modules(bot)
     load_extensions(bot)
 
-
-def prefix(bot, message):
-    if message.author == bot.user:
-        return when_mentioned_or('.')(bot, message)
-    elif message.author.id == 890636026446479430:
-        return when_mentioned(bot, message)
-    else:
-        return []
+def run(bot):
+    setup(bot)
+    with open('uptime register.txt', 'a') as f:
+        f.write(str(bot.started) + '\n')
+    bot.run(environ['TOKEN'])
 
 
-def partial(func, *args, **kwargs):
-    return lambda: func(*args, **kwargs)
-
-
-def partial_nout(func, *args, **kwargs):
-    def _():
-        with redirect_stdout(StringIO()) and redirect_stderr(StringIO()):
-            func(*args, **kwargs)
-
+def prefix():
+    from discord.ext.commands import when_mentioned, when_mentioned_or
+    def _(bot, message):
+        if message.author == bot.user:
+            return when_mentioned_or('.')(bot, message)
+        elif message.author.id == 890636026446479430:
+            return when_mentioned(bot, message)
+        else:
+            return []
     return _
 
 
