@@ -1,0 +1,20 @@
+from discord.ext.commands import Cog, Bot, command, Context
+from bot_api import _m_s
+
+
+class {name}(Cog):
+    def __init__(self, bot: Bot):
+        self.bot = bot
+
+    @Cog.listener()
+    async def on_connect(self):
+        pass
+
+    @command(aliasses=[])
+    async def test(self, ctx: Context):
+        pass
+
+
+def setup(bot: Bot):
+    bot.add_cog(Ready(bot))
+    _m_s(__file__)

@@ -1,0 +1,6 @@
+run="python3.9 main.py"
+onBoot="bash ./setup.sh"
+
+[packager]
+ignoredPaths=[".git", ".py"]
+ignoredPackages=["discord", "pyyaml"]

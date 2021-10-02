@@ -1,0 +1,9 @@
+active: true
+airdrop delay range: !!python/tuple
+- 6
+- 8
+airdrop sniper: true
+phrase delay range: !!python/tuple
+- 4
+- 6
+phrase sniper: true
