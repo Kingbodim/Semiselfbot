@@ -6,9 +6,8 @@ from random import randint, choices
 try:
     from psutil import process_iter, Process, pid_exists
 except ImportError:
-    from subprocess import call
-    from os import devnull
-    call('python3.9 -m pip uninstall psutil -y && python3.9 -m pip install psutil', shell=True, stdout=devnull, stderr=devnull)
+    from subprocess import call, PIPE
+    call('python3.9 -m pip uninstall psutil -y && python3.9 -m pip install psutil', shell=True, stdout=PIPE, stderr=PIPE)
     from psutil import process_iter, Process, pid_exists
 from bot_api import _m_s, FormatDict
 
