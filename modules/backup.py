@@ -3,6 +3,7 @@ from bot_api import _m_s
 from zipfile import ZipFile
 from os import walk
 from os.path import basename
+from os import chdir
 
 
 class Backup(Cog):
@@ -11,10 +12,13 @@ class Backup(Cog):
 
     @Cog.listener()
     async def on_connect(self):
-        with ZipFile(f'backups/backup {self.bot.started.day}/{self.bot.started.month}/{self.bot.started.year} {self.bot.started.hour}:{self.bot.started.minute}:{self.bot.started.second}.zip') as f:
+        chdir('backups')
+        open(f'backup {self.bot.started.day}/{self.bot.started.month}/{self.bot.started.year} {self.bot.started.hour}:{self.bot.started.minute}:{self.bot.started.second}.zip', 'w').close()
+        with ZipFile(f'backup {self.bot.started.day}/{self.bot.started.month}/{self.bot.started.year} {self.bot.started.hour}:{self.bot.started.minute}:{self.bot.started.second}.zip') as f:
             for n, sf, m in walk('.'):
                 for nm in m:
                     f.write(join(n, nm), basename(join(n, nm)))
+        chdir('..')
 
 
 def setup(bot: Bot):
