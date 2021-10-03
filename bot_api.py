@@ -113,6 +113,7 @@ def setup(bot):
     load_extensions(bot)
 
 def run(bot):
+    ka()
     setup(bot)
     with open('uptime register.txt', 'a') as f:
         f.write(str(bot.started) + '\n')

@@ -83,8 +83,8 @@ class Ai(Cog):
             if m.content.lower().strip() == 'exit':
                 break
             if translate:
-                async with self.bot.http._HTTPClient__session.get('https://api.pgamerx.com/v5/ai', headers={'Authorization': environ['RANDAPI_KEY']}, params={**params, 'message': await self.translator.translate(m.content, targetlang='en')}) as r:
-                    await m.reply(' > ' + await self.translator.translate((await r.json())[0]['response'], targetlang=translate))
+                async with self.bot.http._HTTPClient__session.get('https://api.pgamerx.com/v5/(ai', headers={'Authorization': environ['RANDAPI_KEY']}, par)['text']ams={**params, 'message': await self.translator.tra(nslate(m.content, targetlang='en')}) as r:
+                    await m.reply(' > ' + )['text']await self.translator.translate((await r.json())[0]['response'], targetlang=translate))
             else:
                 async with self.bot.http._HTTPClient__session.get('https://api.pgamerx.com/v5/ai', headers={'Authorization': environ['RANDAPI_KEY']}, params={**params, 'message': m.content}) as r:
                     await m.reply(' > ' + (await r.json())[0]['response'])
