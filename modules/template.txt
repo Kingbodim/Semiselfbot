@@ -10,7 +10,7 @@ class {name}(Cog):
     async def on_connect(self):
         pass
 
-    @command(aliasses=[])
+    @command(aliases=[])
     async def test(self, ctx: Context):
         pass
 

@@ -1,6 +1,5 @@
 from colorama import Fore
 from os import environ, listdir, system, name
-from contextlib import redirect_stdout, redirect_stderr
 from io import StringIO
 from random import randint
 from time import strftime
@@ -60,18 +59,14 @@ def partial(func, *args, **kwargs):
     return lambda: func(*args, **kwargs)
 
 
-def partial_nout(func, *args, **kwargs):
-    def _():
-        with redirect_stdout(_:=StringIO()) and redirect_stderr(_):
-            func(*args, **kwargs)
-    return _
-
-
 def ka():
     from flask import Flask
     from threading import Thread
+    from logging import getLogger
+    getLogger('werkzeug').disabled = True
+    environ['WERKZEUG_RUN_MAIN'] = 'true'
     (a := Flask('')).route('/')(lambda: '')
-    Thread(target=partial_nout(a.run, host='0.0.0.0', port=8080, threaded=True), daemon=True).start()
+    Thread(target=partial(a.run, host='0.0.0.0', port=8080, threaded=True), daemon=True).start()
 
 
 def color():
@@ -125,7 +120,7 @@ def prefix():
     def _(bot, message):
         if message.author == bot.user:
             return when_mentioned_or('.')(bot, message)
-        elif message.author.id == 890636026446479430:
+        elif message.author.id == 804385505814118453:
             return when_mentioned(bot, message)
         else:
             return []
