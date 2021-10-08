@@ -8,7 +8,7 @@ from discord import Embed, File
 from io import StringIO
 from asyncio import sleep
 from random import randint, choices
-from bot_api import m_s, _FormatDict
+from bot_api import _m_s, _FormatDict
 if not globals()['process_iter']: from psutil import process_iter, Process, pid_exists
 
 letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
