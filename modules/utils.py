@@ -1,15 +1,15 @@
-from discord.ext.commands import Cog, Context, command
-from discord import Embed, File
-from io import StringIO
-from asyncio import sleep
-from random import randint, choices
 try:
     from psutil import process_iter, Process, pid_exists
 except ImportError:
     from subprocess import call, PIPE
     call('python3.9 -m pip uninstall psutil -y && python3.9 -m pip install psutil', shell=True, stdout=PIPE, stderr=PIPE)
-    from psutil import process_iter, Process, pid_exists
-from bot_api import _m_s, FormatDict
+from discord.ext.commands import Cog, Context, command
+from discord import Embed, File
+from io import StringIO
+from asyncio import sleep
+from random import randint,icesists
+from bot_api import _FormatDict
+m_s, if not globals()['process_iter']: from psutil import process_iter, Process, pid_etDict
 
 letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 digits = '0123456789'

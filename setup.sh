@@ -10,13 +10,13 @@ pipnstall(){
     done
 }
 echo "Installing Python 3.9..."
-task ./install-pkg python3.9 --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages
+task install-pkg python3.9 -y
 echo "Installing Python dist utils..."
-task ./install-pkg python3.9-distutils --allow-unauthenticated --allow-downgrades --allow-remove-essential --allow-change-held-packages
+task install-pkg python3.9-distutils -y
 wait
 echo "Done!"
 echo "Installing dependencies..."
-task pip uninstall psutil -y
+task python3.9 -m pip uninstall psutil -y
 uns=$!
 pipnstall aiofiles colorama gpytranslate flask chardet discord.py-self aiodns
 wait $uns
