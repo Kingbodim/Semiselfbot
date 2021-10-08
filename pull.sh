@@ -1,1 +1,1 @@
-[ $(git rev-parse HEAD) = $(git ls-remote $(git rev-parse --abbrev-ref @{u} | sed 's/\// /g') | cut -f1) ] && echo Up to date! || echo Updating... && git pull &>/dev/null
+[ -n "$(git diff --name-only origin/main)" ] && echo Update found, updating... && git pull https://Minehacker765:$GIT_TOKEN@github.com/Minehacker765/Semiselfbot &>/dev/null
