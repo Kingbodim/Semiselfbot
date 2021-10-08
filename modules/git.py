@@ -12,12 +12,12 @@ class Git(Cog):
     @command(aliases=['push'])
     async def gitpush(self, ctx: Context):
         p = await create_subprocess_shell('bash push.sh', stdout=PIPE, stderr=STDOUT)
-        await ctx.reply(f'```{await p.comunicate()[0]}```')
+        await ctx.reply(f'```{(await p.communicate())[0]}```')
 
     @command(aliases=['pull', 'update'])
     async def gitpull(self, ctx: Context):
         p = await create_subprocess_shell('bash pull.sh', stdout=PIPE, stderr=STDOUT)
-        await ctx.reply(f'```{await p.comunicate()[0]}```')
+        await ctx.reply(f'```{(await p.communicate())[0]}```')
 
 
 def setup(bot: Bot):
