@@ -10,9 +10,7 @@ class TempMessages(Cog):
     @command(aliases=['tempmessage', 'autodel', 'autodelete', 'ad'])
     async def tmpmsg(self, ctx: Context, delay: int, *, message):
         await ctx.message.delete()
-        m = await ctx.send(message)
-        await sleep(delay)
-        await m.delete()
+        m = await ctx.send(message, delete_after=delay)
 
 
 def setup(bot: Bot):

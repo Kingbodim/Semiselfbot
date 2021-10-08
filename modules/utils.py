@@ -7,9 +7,9 @@ from discord.ext.commands import Cog, Context, command
 from discord import Embed, File
 from io import StringIO
 from asyncio import sleep
-from random import randint,icesists
-from bot_api import _FormatDict
-m_s, if not globals()['process_iter']: from psutil import process_iter, Process, pid_etDict
+from random import randint, choices
+from bot_api import m_s, _FormatDict
+if not globals()['process_iter']: from psutil import process_iter, Process, pid_exists
 
 letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 digits = '0123456789'
