@@ -1,6 +1,6 @@
 from bot_api import prefix, run, clear
 from discord import Status
-from discord.ext.commands import Bot
+from bot import Bot
 
 
 # Clearing console

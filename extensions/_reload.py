@@ -17,27 +17,27 @@ class Reload(Cog):
                     color=color(),
                     timestamp=ctx.message.created_at
                 )
-                for ext in listdir('extensions'):
-                    if ext.endswith('.py') and not ext.startswith('_'):
+                for mod in listdir('modules'):
+                    if mod.endswith('.py') and not mod.startswith('_'):
                         try:
-                            self.bot.unload_extension(f'extensions.{ext[:-3]}')
-                            self.bot.load_extension(f'extensions.{ext[:-3]}')
+                            self.bot.unload_extension(f'modules.{mod[:-3]}')
+                            self.bot.load_extension(f'modules.{mod[:-3]}')
                             embed.add_field(
-                                name=f'Reloaded: `{ext}`',
+                                name=f'Reloaded: `{mod}`',
                                 value='\uFEFF',
                                 inline=False
                             )
                         except Exception as e:
                             embed.add_field(
-                                name=f'Failed to reload: `{ext}`',
+                                name=f'Failed to reload: `{mod}`',
                                 value=e,
                                 inline=False
                             )
-                for ext in listdir('modules'):
+                for ext in listdir('extensions'):
                     if ext.endswith('.py') and not ext.startswith('_'):
                         try:
-                            self.bot.unload_extension(f'modules.{ext[:-3]}')
-                            self.bot.load_extension(f'modules.{ext[:-3]}')
+                            self.bot.unload_extension(f'extensions.{ext[:-3]}')
+                            self.bot.load_extension(f'extensions.{ext[:-3]}')
                             embed.add_field(
                                 name=f'Reloaded: `{ext}`',
                                 value='\uFEFF',

@@ -8,3 +8,7 @@ if not exists('extensions'):
     mkdir('extensions')
 if not exists('modules'):
     mkdir('modules')
+if not exists('backups'):
+    mkdir('backups')
+if not exists('snippets'):
+    mkdir('snippets')
