@@ -1,4 +1,4 @@
-from discord.ext.commands import Cog, Bot, Context
+from discord.ext.commands import Cog, Bot
 from bot_api import _m_s, Log
 
 
@@ -17,9 +17,6 @@ class Listeners(Cog):
     @Cog.listener()
     async def on_message_edit(self, before, after):
         await self.bot.process_commands(after)
-
-    async def cog_before_invoke(self, ctx: Context):
-        Log.log(f'Used command {ctx.content}')
 
 
 def setup(bot: Bot):

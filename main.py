@@ -7,4 +7,4 @@ from bot import Bot
 clear()
 
 # Bot declaration & run
-run(Bot(status=Status.offline, self_bot=True, case_insensitive=True, command_prefix=prefix()))
+run(Bot(status=Status.offline, self_bot=True, case_insensitive=True, strip_after_prefix=True, command_prefix=prefix()))
