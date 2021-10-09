@@ -8,10 +8,9 @@ class Snippets(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    @group()
+    @group(invoke_without_command=True)
     async def snippet(self, ctx: Context):
-        if ctx.invoked_subcommand is None:
-            await ctx.reply(f'Invalid command! Usage: `{ctx.prefix}snippet <command>`')
+        await ctx.reply(f'Invalid command! Usage: `{ctx.prefix}snippet <command>`')
 
     @snippet.command(aliases=['see'])
     async def show(self, ctx: Context, *, name):
