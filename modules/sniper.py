@@ -3,6 +3,7 @@ from replit import db
 from bot_api import dump_airdrop, dump_phrasedrop
 from asyncio import sleep
 from random import randint
+from datetime import datetime
 from bot_api import _m_s
 
 
@@ -35,6 +36,10 @@ class Sniper(Cog):
                         await dump_phrasedrop(self.bot, message)
                 except:
                     pass
+        if message.author.id == 294882584201003009:
+            if message.embeds and db['giveaway sniper'] and '**GIVEAWAY**' in message.embeds[0].title:
+                await sleep((message.embeds[0].timestamp-datetime.now()).seconds/2)
+                await message.add_reaction(':tada:')
 
 
 def setup(bot: Bot):

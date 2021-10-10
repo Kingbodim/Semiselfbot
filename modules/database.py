@@ -1,6 +1,5 @@
 from discord.ext.commands import Cog, Context, command, Bot
 from discord import Embed
-from replit import db
 from datetime import datetime
 from asyncio import sleep
 from bot_api import color, _m_s
@@ -11,36 +10,36 @@ class Database(Cog):
         self.bot = bot
 
     @command(aliases=['toggle'])
-    async def trigger(self, ctx: Context, key: str):
+    async def trigger(self, ctx: Context, *, key: str):
         try:
-            db[key] = not db[key]
+            self.bot.db[key] = not self.bot.db[key]
         except Exception as e:
             await ctx.reply(f'❌ Error: ```{e}```')
         else:
-            await ctx.reply(f'✅ {key} toggled to {db[key]} successfully')
+            await ctx.reply(f'✅ {key} toggled to {self.bot.db[key]} successfully')
 
     @command(aliases=['del'])
-    async def delete(self, ctx: Context, key: str):
+    async def delete(self, ctx: Context, *, key: str):
         try:
-            del db[key]
+            del self.bot.db[key]
         except Exception as e:
             await ctx.reply(f'❌ Error: ```{e}```')
         else:
             await ctx.reply(f'✅ {key} deleted successfully from the database')
 
     @command(aliases=['set'])
-    async def change(self, ctx: Context, key: str, value: str):
+    async def change(self, ctx: Context, key: str, *, value: str):
         try:
-            db[key] = eval(value)
+            self.bot.db[key] = eval(value)
         except Exception as e:
             await ctx.reply(f'❌ Error: ```{e}```')
         else:
-            await ctx.reply(f'✅ {key} set to {db[key]} successfully')
+            await ctx.reply(f'✅ {key} set to {self.bot.db[key]} successfully')
 
     @command(aliases=['enable'])
     async def habilite(self, ctx: Context, key: str, time: float):
         try:
-            db[key] = True
+            self.bot.db[key] = True
         except Exception as e:
             await ctx.reply(f'❌ Error: ```{e}```')
         else:
@@ -48,9 +47,9 @@ class Database(Cog):
             await sleep(time*60)
 
     @command(aliases=['settings', 'config'])
-    async def configuration(self, ctx: Context, key: str = None):
+    async def configuration(self, ctx: Context, *, key: str = None):
         embed = Embed(title='Settings', description=f'Use `toggle key` to toggle the value of a key.', color=0x669cff)
-        [embed.add_field(name=key, value=value) for key, value in (db.items() if key is not None else db[key].items()) if type(value) != dict]
+        [embed.add_field(name=key, value=value) for key, value in (self.bot.db[key].items() if key is not None else self.bot.db.items()) if type(value) != dict]
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)
         await ctx.send(embed=embed)
 
@@ -66,7 +65,7 @@ class Database(Cog):
     @command(aliases=['stats'])
     async def sniped(self, ctx: Context):
         embed = Embed(title='Stats', description=f'Bot stats:', color=0x21ff25)
-        [embed.add_field(name=key.capitalize(), value=value) for key, value in db['stats'].items()]
+        [embed.add_field(name=key.capitalize(), value=value) for key, value in self.bot.db['stats'].items()]
         embed.add_field(name='Sniped airdrops since last start', value=str(self.bot.sniped_airdrops))
         embed.add_field(name='Sniped phrases since last start', value=str(self.bot.sniped_phrases))
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)

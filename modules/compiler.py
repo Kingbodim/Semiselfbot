@@ -113,7 +113,8 @@ class Compiler(Cog):
     @command(aliases=['terminal', 'term', 'tmx'])
     async def fish(self, ctx: Context):
         while True:
-            m = await ctx.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and m.channel.id == ctx.channel.id)
+            m = await ctx.bot.wait_for('message', check=lambda m: m.author.id == ctx.auth
+            coded = m.coor.id and m.channel.id == ctx.channel.id)
             if m.content.lower().strip() == 'exit':
                 break
             try:

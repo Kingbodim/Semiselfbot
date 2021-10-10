@@ -16,7 +16,7 @@ echo "Installing Python dist utils..."
 task install-pkg python3.9-distutils -y
 #echo "Installing Tesseract..."
 #task install-pkg tesseract -y
-wait pth
+wait $pth
 echo "Done!"
 echo "Installing dependencies..."
 task python3.9 -m pip uninstall psutil -y

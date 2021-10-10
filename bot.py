@@ -1,4 +1,5 @@
 from discord.ext.commands import Bot, CommandNotFound
+from traceback import TracebackException
 from bot_api import Log
 
 
@@ -9,7 +10,7 @@ class Bot(Bot):
     async def on_command_error(self, ctx, e):
         if isinstance(e, CommandNotFound):
             return
-        await ctx.reply(f'❌ Error: ```{e} ```')
+        await ctx.reply(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())}```')
 
     async def on_connect(self):
         Log.log(f'Bot connected as {self.user}')
