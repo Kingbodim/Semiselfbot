@@ -129,7 +129,7 @@ class Compiler(Cog):
                     out += l
                     await rest.edit(content=f'```bash\n{out.decode()}```')
             except Exception as e:
-                out += fb'{e.__class__.__name__}: {e}'
+                out += f'{e.__class__.__name__}: {e}'.encode()
                 await rest.edit(content=f'```bash\n{out.decode()}```')
 
     @command(aliases=['iter', 'cycle', 'gen'])
