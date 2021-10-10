@@ -127,7 +127,9 @@ class Compiler(Cog):
                     if not l:
                         break
                     out += l
-                    await rest.edit(content=f'```bash\n{out.decode()}```')
+                    await rest.edit(content=f'```bash\n{out.decode()[:1989]}```')
+                    if len(out) >= 1989:
+                        break
             except Exception as e:
                 out += f'{e.__class__.__name__}: {e}'.encode()
                 await rest.edit(content=f'```bash\n{out.decode()}```')
