@@ -126,10 +126,10 @@ class Compiler(Cog):
                 async for l in p.stdout:
                     if not l:
                         break
-                    out += l
+                    out += bytes(l)
                     await rest.edit(content=f'```bash\n{out.decode()}```')
             except Exception as e:
-                out += fb'{e.__class__.__name__}: {e}'
+                out += e.__class__.__name__.encode()+b': '+str(e).encode()
                 await rest.edit(content=f'```bash\n{out.decode()}```')
 
     @command(aliases=['iter', 'cycle', 'gen'])
