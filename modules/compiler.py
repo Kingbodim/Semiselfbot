@@ -92,17 +92,18 @@ class Compiler(Cog):
             m = await ctx.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and m.channel.id == ctx.channel.id)
             if m.content.lower().strip() == 'exit':
                 break
+            content = m.content
+            await m.edit(content=f'```py\n>>> ' + '\n    '.join(m.content.split('\n')) + '```')
             with redirect_stdout(out):
                 try:
-                    c = eval(compile(m.content, '<stdin>', 'eval'))
+                    c = eval(compile(content, '<stdin>', 'eval'))
                 except SyntaxError:
                     try:
-                        c = exec(compile(m.content, '<stdin>', 'exec'))
+                        c = exec(compile(content, '<stdin>', 'exec'))
                     except Exception as e:
                         c = f'{e.__class__.__name__}: {e}'
                 except Exception as e:
                     c = f'{e.__class__.__name__}: {e}'
-            await m.edit(content=f'```py\n>>> ' + '\n    '.join(m.content.split('\n')) + '```')
             if out.getvalue():
                 await m.reply(f'```py\n{out.getvalue()}' + (f'\n{c}```' if c is not None else '```'))
             elif c is not None:
@@ -113,18 +114,23 @@ class Compiler(Cog):
     @command(aliases=['terminal', 'term', 'tmx'])
     async def fish(self, ctx: Context):
         while True:
-            m = await ctx.bot.wait_for('message', check=lambda m: m.author.id == ctx.auth
-            coded = m.coor.id and m.channel.id == ctx.channel.id)
+            m = await ctx.bot.wait_for('message', check=lambda m: m.author.id == ctx.author.id and m.channel.id == ctx.channel.id)
             if m.content.lower().strip() == 'exit':
                 break
-            try:
-                p = await Sopen(m.content, shell=True, stdout=PIPE, stderr=STDOUT)
-                out = (await p.communicate())[0]
-            except Exception as e:
-                out = f'{e.__class__.__name__}: {e}'
+            content = m.content
             await m.edit(content=f'```bash\n$ > ' + '\n    '.join(m.content.split('\n')) + '```')
-            if out:
-                await m.reply(f'```bash\n{out}')
+            rest = await m.reply('Running...')
+            out = ''
+            try:
+                p = await Sopen(content, shell=True, stdout=PIPE, stderr=STDOUT)
+                async for l in p.stdout:
+                    if not l:
+                        break
+                    out += l
+                    await rest.edit(content=f'```bash\n{out}```')
+            except Exception as e:
+                out += f'{e.__class__.__name__}: {e}'
+                await rest.edit(content=f'```bash\n{out}```')
 
     @command(aliases=['iter', 'cycle', 'gen'])
     async def iterator(self, ctx: Context, delay: int = 1, *, content: str):

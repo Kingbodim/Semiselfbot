@@ -58,8 +58,7 @@ class Utils(Cog):
     async def purge(self, ctx: Context, amount: int):
         await ctx.message.delete()
         try:
-            async for m in ctx.channel.history(limit=amount):
-                await m.delete()
+            await ctx.channel.purge(limit=amount)
         except Exception as e:
             await ctx.send(f'Error:\n```\n{e}\n```')
 
