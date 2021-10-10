@@ -120,17 +120,17 @@ class Compiler(Cog):
             content = m.content
             await m.edit(content=f'```bash\n$ > ' + '\n    '.join(m.content.split('\n')) + '```')
             rest = await m.reply('Running...')
-            out = ''
+            out = b''
             try:
                 p = await Sopen(content, shell=True, stdout=PIPE, stderr=STDOUT)
                 async for l in p.stdout:
                     if not l:
                         break
                     out += l
-                    await rest.edit(content=f'```bash\n{out}```')
+                    await rest.edit(content=f'```bash\n{out.decode()}```')
             except Exception as e:
-                out += f'{e.__class__.__name__}: {e}'
-                await rest.edit(content=f'```bash\n{out}```')
+                out += fb'{e.__class__.__name__}: {e}'
+                await rest.edit(content=f'```bash\n{out.decode()}```')
 
     @command(aliases=['iter', 'cycle', 'gen'])
     async def iterator(self, ctx: Context, delay: int = 1, *, content: str):
