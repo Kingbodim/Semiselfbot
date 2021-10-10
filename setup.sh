@@ -10,13 +10,13 @@ pipnstall(){
     done
 }
 echo "Installing Python 3.9..."
-task install-pkg python3.9 -y
-pth=$!
+task install-pkg python3.9
+wait
 echo "Installing Python dist utils..."
-task install-pkg python3.9-distutils -y
+cp -r /usr/lib/python3.8/distutils /home/runner/.apt/usr/lib/python3.9/
+#task install-pkg python3-distutils -y
 #echo "Installing Tesseract..."
 #task install-pkg tesseract -y
-wait $pth
 echo "Done!"
 echo "Installing dependencies..."
 task python3.9 -m pip uninstall psutil -y
