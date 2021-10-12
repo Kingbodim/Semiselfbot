@@ -1,3 +1,20 @@
 {
-  "files": {}
+  "files": {
+    "bot.py": [
+      {
+        "id": "10a70464-ed50-4f5e-a3d1-8a1a4a68b30c",
+        "line": 17,
+        "version": 240,
+        "index": 527
+      }
+    ],
+    "settings.yml": [
+      {
+        "id": "96173ead-48fb-4cbb-9ead-612bfda69083",
+        "line": 4,
+        "version": 1,
+        "index": 53
+      }
+    ]
+  }
 }

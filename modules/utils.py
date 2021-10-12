@@ -1,15 +1,10 @@
-try:
-    from psutil import process_iter, Process, pid_exists
-except ImportError:
-    from subprocess import call, PIPE
-    call('python3.9 -m pip uninstall psutil -y && python3.9 -m pip install psutil', shell=True, stdout=PIPE, stderr=PIPE)
+from psutil import process_iter, Process, pid_exists
 from discord.ext.commands import Cog, Context, command
 from discord import Embed, File
 from io import StringIO
 from asyncio import sleep
 from random import randint, choices
 from bot_api import _m_s, FormatDict
-if not globals()['process_iter']: from psutil import process_iter, Process, pid_exists
 
 letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 digits = '0123456789'
@@ -58,8 +53,7 @@ class Utils(Cog):
     async def purge(self, ctx: Context, amount: int):
         await ctx.message.delete()
         try:
-            async for m in ctx.channel.history(limit=amount):
-                await m.delete()
+            await ctx.channel.purge(limit=amount)
         except Exception as e:
             await ctx.send(f'Error:\n```\n{e}\n```')
 

@@ -1,8 +1,8 @@
 from discord.ext.commands import Bot, CommandNotFound, MinimalHelpCommand
-from discord import Embed
+from traceback import TracebackException
 from bot_api import Log, prefix, ka, load_modules, load_extensions
 from os import environ
-from discord import Status
+from discord import Embed, Status
 from replit import db
 from datetime import datetime
 
@@ -30,12 +30,12 @@ class Bot(Bot):
         self.run(environ['TOKEN'])
 
     async def on_command(self, ctx):
-        Log.log(f'Used command {ctx.message.content}')
+        Log.log(f'Used command {ctx.message.content}', 'LOG')
 
     async def on_command_error(self, ctx, e):
         if isinstance(e, CommandNotFound):
             return
-        await ctx.reply(f'❌ Error: ```{e} ```')
+        await ctx.reply(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())}```')
 
     async def on_connect(self):
         Log.log(f'Bot connected as {self.user}')

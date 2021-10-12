@@ -5,15 +5,17 @@ task(){
 pipnstall(){
     for e in "$@"
     do
-        task pip install $e
+        task python3.9 -m pip install $e
         echo "Installing $e..."
     done
 }
 echo "Installing Python 3.9..."
-task install-pkg python3.9 -y
+task install-pkg python3.9
 echo "Installing Python dist utils..."
-task install-pkg python3.9-distutils -y
+task install-pkg python3.9-distutils
 wait
+#echo "Installing Tesseract..."
+#task install-pkg tesseract -y
 echo "Done!"
 echo "Installing dependencies..."
 task python3.9 -m pip uninstall psutil -y

@@ -8,10 +8,9 @@ class Git(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    @group()
+    @group(invoke_without_command=True)
     async def git(self, ctx: Context):
-        if ctx.invoked_subcommand is None:
-            await ctx.reply(f'Invalid git command passed. Usage: `{ctx.prefix}git <command>`, ex. `{ctx.prefix}git pull`')
+        await ctx.reply(f'Invalid git command passed. Usage: `{ctx.prefix}git <command>`, ex. `{ctx.prefix}git pull`')
 
     @git.command()
     async def push(self, ctx: Context):
