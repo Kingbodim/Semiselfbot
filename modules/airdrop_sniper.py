@@ -6,7 +6,7 @@ from random import randint
 from bot_api import _m_s
 
 
-class Sniper(Cog):
+class AdSniper(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
@@ -38,5 +38,5 @@ class Sniper(Cog):
 
 
 def setup(bot: Bot):
-    bot.add_cog(Sniper(bot))
+    bot.add_cog(AdSniper(bot))
     _m_s(__file__)

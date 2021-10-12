@@ -32,7 +32,7 @@ class Log:
 
     @staticmethod
     def log(message='', section='BOT'):
-        print(f'{Fore.LIGHTWHITE_EX}( {strftime("%H:%M:%S")} ) [ {Fore.LIGHTRED_EX}{section}{Fore.LIGHTWHITE_EX} ] {Fore.LIGHTYELLOW_EX}{message}{Fore.RESET}')
+        print(f'{Fore.LIGHTWHITE_EX}( {strftime("%H:%M:%S")} ) [ {Fore.LIGHTCYAN_EX}{section}{Fore.LIGHTWHITE_EX} ] {Fore.LIGHTYELLOW_EX}{message}{Fore.RESET}')
 
     @staticmethod
     def success(message='', section='BOT'):
@@ -97,24 +97,6 @@ def load_extensions(bot):
                 Log.extension_load_err(ext, e)
 
 
-def setup(bot):
-    from replit import db
-    from datetime import datetime
-    bot.db = db
-    bot.started = datetime.utcnow()
-    bot.sniped_airdrops = 0
-    bot.sniped_phrases = 0
-    load_modules(bot)
-    load_extensions(bot)
-
-def run(bot):
-    ka()
-    setup(bot)
-    with open('uptime register.txt', 'a') as f:
-        f.write(str(bot.started) + '\n')
-    bot.run(environ['TOKEN'])
-
-
 def prefix():
     from discord.ext.commands import when_mentioned, when_mentioned_or
     def _(bot, message):
@@ -168,6 +150,64 @@ async def dump_phrasedrop(client, message):
                     'icon_url': str(client.user.avatar_url)
                     },
                 'color': 0x1abc9c
+                }],
+            'username': f"{client.user}'s selfbot",
+            'avatar_url': str(client.user.avatar_url)
+            })
+
+
+async def dump_giveaway(client, message):
+    await client.http._HTTPClient__session.post(
+        environ['WEBHOOK'],
+        json={
+            'content': '',
+            'embeds': [{
+                'title': 'Giveaway sniped',
+                'description': f'Sniped a giveaway with a prize of {message.embeds[0].author.name} in <#{message.channel.id}> (channel from {message.channel.guild.name}). Ends on {message.embeds[0].description.split("Ends: ")[1]}\n[[ Jump to message ]]({message.jump_url})',
+                'author': {
+                    'name': f'{client.user}',
+                    'icon_url': str(client.user.avatar_url)
+                    },
+                'color': 0xf75482
+                }],
+            'username': f"{client.user}'s selfbot",
+            'avatar_url': str(client.user.avatar_url)
+            })
+
+
+async def dump_win(client, message, mg):
+    lst = '\n\t-\t'+'\n\t-\t'.join(map(str, mg))
+    await client.http._HTTPClient__session.post(
+        environ['WEBHOOK'],
+        json={
+            'content': '',
+            'embeds': [{
+                'title': 'Giveaway won!',
+                'description': f'Won a giveaway in <#{message.channel.id}> (channel from {message.channel.guild.name}).\nMessaged: {lst}\n\n[[ Jump to message ]]({message.jump_url})',
+                'author': {
+                    'name': f'{client.user}',
+                    'icon_url': str(client.user.avatar_url)
+                    },
+                'color': 0x71e62e
+                }],
+            'username': f"{client.user}'s selfbot",
+            'avatar_url': str(client.user.avatar_url)
+            })
+
+
+async def dump_nitro(client, message, response):
+    await client.http._HTTPClient__session.post(
+        environ['WEBHOOK'],
+        json={
+            'content': '',
+            'embeds': [{
+                'title': 'Sniped Nitro!',
+                'description': f'Sniped Nitro in <#{message.channel.id}>.\nThe status code was **{response.status_code}**\n\n[[ Jump to message ]]({message.jump_url})',
+                'author': {
+                    'name': f'{client.user}',
+                    'icon_url': str(client.user.avatar_url)
+                    },
+                'color': 0x71e62e
                 }],
             'username': f"{client.user}'s selfbot",
             'avatar_url': str(client.user.avatar_url)

@@ -1,6 +1,7 @@
 from discord.ext.commands import Cog, Context, command, Bot
 from discord import Embed
 from replit import db
+from replit.database.database import ObservedDict
 from datetime import datetime
 from asyncio import sleep
 from bot_api import color, _m_s
@@ -46,11 +47,12 @@ class Database(Cog):
         else:
             await ctx.reply(f'✅ {key} enabled for {time} minutes successfully!')
             await sleep(time*60)
+            db[key] = False
 
     @command(aliases=['settings', 'config'])
     async def configuration(self, ctx: Context, key: str = None):
         embed = Embed(title='Settings', description=f'Use `toggle key` to toggle the value of a key.', color=0x669cff)
-        [embed.add_field(name=key, value=value) for key, value in (db.items() if key is not None else db[key].items()) if type(value) != dict]
+        [embed.add_field(name=key, value=value) for key, value in (db.items() if key is None else db[key].items()) if not isinstance(value, ObservedDict)]
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)
         await ctx.send(embed=embed)
 

