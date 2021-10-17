@@ -44,16 +44,26 @@ class Bots(Cog):
     async def play(self, ctx: Context):
         await ctx.reply(f'Invalid command passed. Usage: `{ctx.prefix}{ctx.command} <bot> <options>`, ex. `{ctx.prefix}{ctx.command} dank start`')
 
+    @play.command(aliases=['play'])
+    async def start(self, ctx: Context):
+        await ctx.invoke(self.start1)
+        await ctx.invoke(self.start2)
+
+    @play.command(aliases=['cancel'])
+    async def stop(self, ctx: Context):
+        await ctx.invoke(self.stop1)
+        await ctx.invoke(self.stop2)
+
     @play.group(invoke_without_command=True, aliases=['memer'])
     async def dank(self, ctx: Context):
         await ctx.reply(f'Invalid command passed. Usage: `{ctx.prefix}{ctx.command} <options>`, ex. `{ctx.prefix}{ctx.command} start`')
 
-    @dank.command(aliases=['play'])
-    async def start(self, ctx: Context, channel_id: int = 896480965222875137):
+    @dank.command(name='start', aliases=['play'])
+    async def start1(self, ctx: Context, channel_id: int = 896480965222875137):
         self.tasks['dank'] = await cmds(self.bot, await self.bot.fetch_channel(channel_id), dank_setup)
 
-    @dank.command(aliases=['cancel'])
-    async def stop(self, ctx: Context):
+    @dank.command(name='stop', aliases=['cancel'])
+    async def stop1(self, ctx: Context):
         [t.cancel() for t in self.tasks['dank']]
 
     @play.group(invoke_without_command=True, aliases=['idleminer'])

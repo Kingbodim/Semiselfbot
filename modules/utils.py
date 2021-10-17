@@ -50,12 +50,13 @@ class Utils(Cog):
             await ctx.send(f'Error:\n```\n{e}\n```')
 
     @command(aliases=['remove'])
-    async def purge(self, ctx: Context, amount: int):
+    async def purge(self, ctx: Context, amount: int, check: bool = True):
         await ctx.message.delete()
-        try:
-            await ctx.channel.purge(limit=amount)
-        except Exception as e:
-            await ctx.send(f'Error:\n```\n{e}\n```')
+        async for m in ctx.history(limit=amount).filter(lambda m: m.author==ctx.author or check):
+            try:
+                await m.delete()
+            except:
+                pass
 
     @command(aliases=['tm', 'tasks'])
     async def taskmanager(self, ctx: Context):

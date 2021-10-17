@@ -3,6 +3,7 @@ from traceback import TracebackException
 from bot_api import Log, prefix, ka, load_modules, load_extensions
 from os import environ
 from discord import Embed, Status
+from discord.errors import HTTPException
 from replit import db
 from datetime import datetime
 
@@ -35,7 +36,10 @@ class Bot(Bot):
     async def on_command_error(self, ctx, e):
         if isinstance(e, CommandNotFound):
             return
-        await ctx.reply(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())}```')
+        try:
+            await ctx.reply(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())[:1985]}```')
+        except HTTPException:
+            await ctx.send(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())[:1985]}```')
 
     async def on_connect(self):
         Log.log(f'Bot connected as {self.user}')

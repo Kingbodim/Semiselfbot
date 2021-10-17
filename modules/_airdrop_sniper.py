@@ -1,4 +1,6 @@
 from discord.ext.commands import Cog, Bot
+from discord.embeds import _EmptyEmbed
+from datetime import datetime
 from replit import db
 from bot_api import dump_airdrop, dump_phrasedrop
 from asyncio import sleep
@@ -14,15 +16,12 @@ class AdSniper(Cog):
     async def on_message(self, message):
         if message.author.id == 617037497574359050 and message.embeds:
             if db['airdrop sniper']:
-                try:
-                    if 'an airdrop appears' in message.embeds[0].title.lower():
-                        await sleep(randint(*db['airdrop delay range']))
-                        await message.add_reaction('🎉')
-                        self.bot.sniped_airdrops += 1
-                        db['stats']['sniped airdrops'] += 1
-                        await dump_airdrop(self.bot, message)
-                except:
-                    pass
+                if not isinstance(message.embeds[0].title, _EmptyEmbed) and 'An airdrop appears' in message.embeds[0].title:
+                    self.bot.loop.create_task(dump_airdrop(self.bot, message))
+                    now = datetime.now()
+                    if (message.embeds[0].timestamp-now).seconds <= 1: return
+                    await sleep((message.embeds[0].timestamp-now).seconds/2)
+                    await message.add_reaction('🎉')
             if db['phrase sniper']:
                 try:
                     if 'started a phrase drop' in message.embeds[0].description.lower():

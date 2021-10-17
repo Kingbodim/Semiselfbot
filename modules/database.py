@@ -54,12 +54,12 @@ class Database(Cog):
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)
         await ctx.send(embed=embed)
 
-    @command(aliases=['uptime', 'up'])
+    @command(aliases=['uptime', 'up', 'latency'])
     async def live(self, ctx: Context):
         t = datetime.utcnow() - self.bot.started
         h, remainder = divmod(t.seconds, 3600)
         m, s = divmod(remainder, 60)
-        embed = Embed(title='Uptime', description=f'Bot is up since {self.bot.started}, for {t.days} days, {h} hours, {m} minutes and {s} seconds.', color=color())
+        embed = Embed(title='Uptime', description=f'Bot is up since <t:{self.bot.started.timestamp():.0f}:F> (<t:{self.bot.started.timestamp():.0f}:R>), for {t.days} days, {h} hours, {m} minutes and {s} seconds.\nBot\'s latency is {self.bot.latency} seconds.', color=color())
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)
         await ctx.send(embed=embed)
 

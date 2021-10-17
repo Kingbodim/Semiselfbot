@@ -1,0 +1,7 @@
+aiofiles
+colorama
+gpytranslate
+flask
+chardet
+discord.py-self
+aiodns

@@ -15,12 +15,31 @@ class Raw(Cog):
         elif ctx.message.reference:
             await ctx.reply(f'```{(await ctx.fetch_message(ctx.message.reference.message_id)).content}```')
 
+    @command(aliases=['rawbytes', 'getrawbytes', 'bytes'])
+    async def getrawcontentbytes(self, ctx: Context, msg: Message = None):
+        if msg is not None:
+            await ctx.reply(f'```{msg.content.encode()}```')
+        elif ctx.message.reference:
+            await ctx.reply(f'```{(await ctx.fetch_message(ctx.message.reference.message_id)).content.encode()}```')
+
     @command(aliases=['ge', 'embedcontent', 'getem'])
     async def getembed(self, ctx: Context, msg: Message = None):
         if msg is not None:
             await ctx.reply(f'```json\n{dumps(msg.embeds[0].to_dict(), indent=4)}```')
         elif ctx.message.reference:
             await ctx.reply(f'```json\n{dumps((await ctx.fetch_message(ctx.message.reference.message_id)).embeds[0].to_dict(), indent=4)}```')
+
+    @command(aliases=['msg', 'duplicate', 'resend'])
+    async def getmsg(self, ctx: Context, msg: int = None, channel: int = None):
+        if channel:
+            msg = await self.bot.get_channel(channel).fetch_message(msg)
+        elif msg:
+            msg = await ctx.fetch_message(msg)
+        elif ctx.message.reference:
+            msg = await ctx.fetch_message(ctx.message.reference.message_id)
+        else:
+            return
+        await ctx.reply(content=msg.content, embed=msg.embeds[0] if msg.embeds else None)
 
 
 def setup(bot: Bot):

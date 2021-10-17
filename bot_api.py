@@ -3,6 +3,7 @@ from os import environ, listdir, system, name
 from io import StringIO
 from random import randint
 from time import strftime
+from json import dumps
 
 
 class Log:
@@ -115,7 +116,7 @@ class FormatDict(dict):
 
 
 async def dump_airdrop(client, message):
-    val = message.embeds[0].description.split('airdrop of')[1].split(')')[0].strip()
+    val = message.embeds[0].description.split('left an airdrop of')[1].split('.')[0].strip()
     await client.http._HTTPClient__session.post(
         environ['WEBHOOK'],
         json={
@@ -123,7 +124,7 @@ async def dump_airdrop(client, message):
         'embeds': [
             {
                 'title': 'Airdrop sniped',
-                'description': f'Sniped an airdrop with a value of {val}) in <#{message.channel.id}> (channel from {message.channel.guild.name}).\n[[ Jump to message ]]({message.jump_url})',
+                'description': f'Sniped an airdrop with a value of {val} in <#{message.channel.id}> (channel from {message.channel.guild.name}).\n[[ Jump to message ]]({message.jump_url})',
                 'author': {
                     'name': f'{client.user}',
                     'icon_url': str(client.user.avatar_url)
@@ -163,7 +164,7 @@ async def dump_giveaway(client, message):
             'content': '',
             'embeds': [{
                 'title': 'Giveaway sniped',
-                'description': f'Sniped a giveaway with a prize of {message.embeds[0].author.name} in <#{message.channel.id}> (channel from {message.channel.guild.name}). Ends on {message.embeds[0].description.split("Ends: ")[1]}\n[[ Jump to message ]]({message.jump_url})',
+                'description': f'Sniped a giveaway with a prize of {message.embeds[0].author.name} in <#{message.channel.id}> (channel from {message.channel.guild.name}). Ends on {message.embeds[0].description.split("Ends")[1].strip(":").strip()}\n[[ Jump to message ]]({message.jump_url})',
                 'author': {
                     'name': f'{client.user}',
                     'icon_url': str(client.user.avatar_url)
@@ -175,15 +176,14 @@ async def dump_giveaway(client, message):
             })
 
 
-async def dump_win(client, message, mg):
-    lst = '\n\t-\t'+'\n\t-\t'.join(map(str, mg))
+async def dump_win(client, message, h):
     await client.http._HTTPClient__session.post(
         environ['WEBHOOK'],
         json={
             'content': '',
             'embeds': [{
                 'title': 'Giveaway won!',
-                'description': f'Won a giveaway in <#{message.channel.id}> (channel from {message.channel.guild.name}).\nMessaged: {lst}\n\n[[ Jump to message ]]({message.jump_url})',
+                'description': f'Won a giveaway in <#{message.channel.id}> (channel from {message.channel.guild.name}).\nMessaged: \n\t-\t{h}\n\n[[ Jump to message ]]({message.jump_url})',
                 'author': {
                     'name': f'{client.user}',
                     'icon_url': str(client.user.avatar_url)
@@ -195,14 +195,14 @@ async def dump_win(client, message, mg):
             })
 
 
-async def dump_nitro(client, message, response):
+async def dump_nitro(client, message, response, code):
     await client.http._HTTPClient__session.post(
         environ['WEBHOOK'],
         json={
-            'content': '',
+            'content': f'https://discord.gift/{code}',
             'embeds': [{
                 'title': 'Sniped Nitro!',
-                'description': f'Sniped Nitro in <#{message.channel.id}>.\nThe status code was **{response.status_code}**\n\n[[ Jump to message ]]({message.jump_url})',
+                'description': f'Sniped Nitro in <#{message.channel.id}>.\nThe status code was **{response.status_code}**\n\n[[ Jump to message ]]({message.jump_url})\n\nResponse:\n```json\n{dumps(response.json(), indent=4)}```',
                 'author': {
                     'name': f'{client.user}',
                     'icon_url': str(client.user.avatar_url)
