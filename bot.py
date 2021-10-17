@@ -30,6 +30,9 @@ class Bot(Bot):
             f.write(str(self.started) + '\n')
         self.run(environ['TOKEN'])
 
+    async def process_commands(self, message):
+        await self.invoke(await self.get_context(message))
+
     async def on_command(self, ctx):
         Log.log(f'Used command {ctx.message.content}', 'LOG')
 
