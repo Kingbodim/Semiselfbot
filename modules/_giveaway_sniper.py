@@ -27,7 +27,8 @@ class GwSniper(Cog):
                         await message.add_reaction('🎉')
                 if message.mentions and message.mentions[0] == self.bot.user and db['giveaway claimer']:
                     await sleep(randint(5, 7))
-                    h = await message.channel.history(limit=5).get(author__bot=False)
+                    h = await message.channel.history(limit=5).get(author__bot=False).author
+                    await h.send('claim')
                     self.bot.loop.create_task(dump_win(self.bot, message, h))
             except:
                 pass
