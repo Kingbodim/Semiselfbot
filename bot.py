@@ -18,7 +18,7 @@ class Help(MinimalHelpCommand):
 
 class Bot(Bot):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, status=Status.offline, self_bot=True, case_insensitive=True, strip_after_prefix=True, command_prefix=prefix(), max_messages=10000, **kwargs)
+        super().__init__(*args, status=Status.offline, case_insensitive=True, strip_after_prefix=True, command_prefix=prefix(), max_messages=10000, **kwargs)
         ka()
         self.db = db
         self.started = datetime.utcnow()
