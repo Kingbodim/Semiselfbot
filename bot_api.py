@@ -99,12 +99,11 @@ def load_extensions(bot):
 
 
 def prefix():
-    from discord.ext.commands import when_mentioned, when_mentioned_or
     def _(bot, message):
         if message.author == bot.user:
-            return when_mentioned_or('.')(bot, message)
+            return [f'<@{bot.user.id}>', f'<@!{bot.user.id}>', '.']
         elif message.author.id == 804385505814118453:
-            return when_mentioned(bot, message)
+            return [f'<@{bot.user.id}>', f'<@!{bot.user.id}>']
         else:
             return []
     return _
