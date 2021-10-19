@@ -104,8 +104,6 @@ def prefix():
             return [f'<@{bot.user.id}>', f'<@!{bot.user.id}>', '.']
         elif message.author.id == 804385505814118453:
             return [f'<@{bot.user.id}>', f'<@!{bot.user.id}>']
-        else:
-            return None
     return _
 
 

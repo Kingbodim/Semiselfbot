@@ -18,7 +18,7 @@ class Help(MinimalHelpCommand):
 
 class Bot(Bot):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, status=Status.offline, case_insensitive=True, strip_after_prefix=True, command_prefix=prefix(), max_messages=10000, **kwargs)
+        super().__init__(*args, status=Status.offline, case_insensitive=True, user_bot=True, strip_after_prefix=True, command_prefix=prefix(), max_messages=10000, **kwargs)
         ka()
         self.db = db
         self.started = datetime.utcnow()
@@ -29,9 +29,6 @@ class Bot(Bot):
         with open('uptime register.txt', 'a') as f:
             f.write(str(self.started) + '\n')
         self.run(environ['TOKEN'])
-
-    async def process_commands(self, message):
-        await self.invoke(await self.get_context(message))
 
     async def on_command(self, ctx):
         Log.log(f'Used command {ctx.message.content}', 'LOG')
@@ -50,5 +47,10 @@ class Bot(Bot):
     async def on_ready(self):
         Log.log(f'Bot ready as {self.user}')
 
+    async def on_message(self, message):
+        if message.author.id not in [self.user.id, 804385505814118453]:
+            return
+        await self.process_commands(message)
+
     async def on_message_edit(self, before, after):
-        await self.process_commands(after)
+        await self.on_message(after)
