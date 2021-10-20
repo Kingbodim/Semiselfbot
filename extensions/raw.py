@@ -42,6 +42,14 @@ class Raw(Cog):
         await ctx.reply(content=msg.content, embed=msg.embeds[0] if msg.embeds else None)
 
 
+    @command(aliases=['removemessage', 'deletemsg', 'delmsg'])
+    async def rmmsg(self, ctx: Context, msg: Message = None):
+        if msg is not None:
+            await msg.delete()
+        elif ctx.message.reference:
+            await (await ctx.fetch_message(ctx.message.reference.message_id)).delete()
+
+
 def setup(bot: Bot):
     bot.add_cog(Raw(bot))
     _e_s(__file__)
