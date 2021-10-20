@@ -32,7 +32,10 @@ class Utils(Cog):
 
     @command(aliases=['setinterval', 'repeat', 'interval'])
     async def iterate(self, ctx: Context, delay: int, amount: int, *, content):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         try:
             for n in range(1, amount + 1):
                 await ctx.send(content.format_map(FormatDict(globals(), **locals())))
@@ -42,7 +45,10 @@ class Utils(Cog):
 
     @command()
     async def spam(self, ctx: Context, amount: int, *, content):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         try:
             for n in range(1, amount + 1):
                 await ctx.send(content.format_map(FormatDict(globals(), **locals())))
@@ -50,13 +56,23 @@ class Utils(Cog):
             await ctx.send(f'Error:\n```\n{e}\n```')
 
     @command(aliases=['remove'])
-    async def purge(self, ctx: Context, amount: int, check: bool = True):
-        await ctx.message.delete()
-        async for m in ctx.history(limit=amount).filter(lambda m: m.author==ctx.author or check):
-            try:
-                await m.delete()
-            except:
-                pass
+    async def purge(self, ctx: Context, amount: int, own: bool = True):
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+        count = 0
+        while count < amount:
+            async for m in ctx.history(limit=100).filter(lambda m: m.author==ctx.author or not own):
+                if count < amount:
+                    try:
+                        await m.delete()
+                    except:
+                        pass
+                    else:
+                        count += 1
+                else:
+                    break
 
     @command(aliases=['tm', 'tasks'])
     async def taskmanager(self, ctx: Context):
@@ -72,7 +88,10 @@ class Utils(Cog):
 
     @command(aliases=['nitro', 'gennitro'])
     async def nitrogen(self, ctx: Context, amount: int, *, content):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         await ctx.send(content=content, file=File(StringIO('\n'.join(f'https://discord.gift/{"".join(choices(letters + digits, k=16))}' for _ in range(amount))), f'{amount} Nitro codes.txt'))
 
     @Cog.listener()

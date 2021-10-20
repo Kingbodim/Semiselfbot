@@ -50,7 +50,7 @@ class Database(Cog):
     @command(aliases=['settings', 'config'])
     async def configuration(self, ctx: Context, *, key: str = None):
         embed = Embed(title='Settings', description=f'Use `toggle key` to toggle the value of a key.', color=0x669cff)
-        [embed.add_field(name=key, value=value) for key, value in (self.bot.db.items() if key is None else self.bot.db[key].items()) if not issubclass(type(value), dict)]
+        [embed.add_field(name=key, value=str(value) or None) for key, value in (self.bot.db.items() if key is None else self.bot.db[key].items()) if key != 'stats']
         embed.set_footer(text=str(ctx.bot.user), icon_url=ctx.bot.user.avatar_url)
         await ctx.send(embed=embed)
 
