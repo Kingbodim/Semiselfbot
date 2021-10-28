@@ -16,7 +16,7 @@ class GwSniper(Cog):
     async def on_message(self, message: Message):
         if message.author.id == 294882584201003009 or message.author.id == 824119071556763668:
             try:
-                if message.channel.permissions_for(message.guild.me).send_messages:
+                if not message.guild or message.channel.permissions_for(message.guild.me).send_messages:
                     return
                 if message.embeds and db['giveaway sniper']:
                     if not isinstance(message.embeds[0].author.name, _EmptyEmbed) and 'nitro' in message.embeds[0].author.name.lower() and 'GIVEAWAY' in message.content:

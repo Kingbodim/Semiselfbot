@@ -2,6 +2,7 @@ from colorama import Fore
 from os import environ, listdir, system, name
 from io import StringIO
 from random import randint
+from discord.embeds import _EmptyEmbed
 from time import strftime
 from json import dumps
 
@@ -46,6 +47,18 @@ class Log:
     @staticmethod
     def err(message='', section='BOT'):
         print(f'{Fore.LIGHTWHITE_EX}( {strftime("%H:%M:%S")} ) [ {Fore.RED}{section}{Fore.LIGHTWHITE_EX} ] {Fore.RED}{message}{Fore.RESET}')
+
+
+class Giveaway:
+    def __init__(self, message, host=None, prize=None, ends=None):
+        self.message = message
+        self.host = host
+        self.prize = prize
+        self.ends = ends
+
+    @classmethod
+    def from_message(cls, message):
+        return cls(message=message, prize=message.embeds[0].author.name if not isinstance(message.embeds[0].author.name, _EmptyEmbed) else None, ends=message.embeds[0].timestamp)
 
 
 def _m_s(m):
@@ -102,7 +115,7 @@ def prefix():
     def _(bot, message):
         if message.author == bot.user:
             return [f'<@{bot.user.id}>', f'<@!{bot.user.id}>', '.']
-        elif message.author.id == 804385505814118453:
+        elif message.author.id == 890636026446479430:
             return [f'<@{bot.user.id}>', f'<@!{bot.user.id}>']
     return _
 
@@ -205,6 +218,25 @@ async def dump_nitro(client, message, response, code):
                     'icon_url': str(client.user.avatar_url)
                     },
                 'color': 0x71e62e
+                }],
+            'username': f"{client.user}'s selfbot",
+            'avatar_url': str(client.user.avatar_url)
+            })
+
+
+async def dump_invite(client, message):
+    await client.http._HTTPClient__session.post(
+        environ['WEBHOOK'],
+        json={
+            'content': '',
+            'embeds': [{
+                'title': 'Invite sniped',
+                'description': f'Sniped an invite with a prize of {message.embeds[0].author.name} in <#{message.channel.id}> (channel from {message.channel.guild.name}). Ends on {message.embeds[0].description.split("Ends")[1].strip(":").strip()}\n[[ Jump to message ]]({message.jump_url})',
+                'author': {
+                    'name': f'{client.user}',
+                    'icon_url': str(client.user.avatar_url)
+                    },
+                'color': 0xe2ed7b
                 }],
             'username': f"{client.user}'s selfbot",
             'avatar_url': str(client.user.avatar_url)

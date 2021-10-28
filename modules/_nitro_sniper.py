@@ -17,7 +17,7 @@ class Sniper(Cog):
 
     @Cog.listener()
     async def on_message(self, message):
-        if (cds:=c.search(message.content)) and not message.author.bot and message.author != self.bot.user:
+        if (cds:=c.search(message.content)) and not message.author.bot and message.author != self.bot.user and db['nitro sniper']:
             code = cds.group(2)
             if len(code) != 16:
                 return
@@ -30,7 +30,7 @@ class Sniper(Cog):
             #    'channel_id': str(message.channel.id),
             #    'payment_source_id': 'null'
             #}
-            r = post(f'https://discord.com/api/v9/entitlements/gift-codes/{code}/redeem', headers={'Authorization': self.bot.db['claim token'] or self.bot.http.token})
+            r = post(f'https://discord.com/api/v9/entitlements/gift-codes/{code}/redeem', headers={'Authorization': db['claim token'] or self.bot.http.token})
             await dump_nitro(self.bot, message, r, code)
 
 def setup(bot: Bot):

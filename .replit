@@ -1,5 +1,6 @@
-run="bash ./start.sh"
-onBoot="bash ./setup.sh"
+run="bash start.sh"
+language="python3"
+onBoot="bash setup.sh"
 
 [packager]
 ignoredPaths=[".git", ".py"]
