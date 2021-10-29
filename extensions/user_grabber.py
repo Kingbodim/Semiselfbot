@@ -12,6 +12,10 @@ class UserGrabber(Cog):
     async def usergrabber(self, ctx: Context, *, form='{u.id}'):
         await ctx.reply(file=File(StringIO('\n'.join(map(lambda u: form.format(u=u), self.bot.get_all_members()))), filename='users.txt'))
 
+    @command(aliases=['graball', 'getall'])
+    async def usergrabber(self, ctx: Context, form='{u.id}', *, condition='u'):
+        await ctx.reply(file=File(StringIO('\n'.join(map(lambda u: form.format(u=u), [u for u in self.bot.get_all_members() if eval(condition)]))), filename='users.txt'))
+
 
 def setup(bot: Bot):
     bot.add_cog(UserGrabber(bot))
