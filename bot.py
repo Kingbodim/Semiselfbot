@@ -1,5 +1,5 @@
 from discord.ext.commands import Bot, CommandNotFound, MinimalHelpCommand
-from traceback import TracebackException
+from traceback import TracebackException, format_exc
 from bot_api import Log, prefix, ka, load_modules, load_extensions
 from os import environ
 from discord import Embed, Status
@@ -37,7 +37,7 @@ class Bot(Bot):
         if isinstance(e, CommandNotFound):
             return
         try:
-            await ctx.reply(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())[:1985]}```')
+            await ctx.reply(f'❌ Error: ```{"".join(format_exc())[:1985]}```')
         except HTTPException:
             await ctx.send(f'❌ Error: ```{"".join(TracebackException.from_exception(e).format())[:1985]}```')
 

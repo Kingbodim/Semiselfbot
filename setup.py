@@ -6,7 +6,7 @@ if not db and db is not None:
     db.update(default_settings)
 df = dict(db)
 for k, v in default_settings.items():
-    if not k in df:
+    if k not in df.keys():
         db[k] = v
 if not exists('extensions'):
     mkdir('extensions')
